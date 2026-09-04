@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  mercy-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    ports:
+      - "3001:3001"
+    environment:
+      PORT: 3001
+      JWT_SECRET: mercy-secret-key-change-in-production
+      AI_PROVIDER: none
+    volumes:
+      - ./server/data:/app/server/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  mercy-client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    ports:
+      - "3000:3000"
+    environment:
+      VITE_API_URL: http://localhost:3001/api
+    depends_on:
+      mercy-server:
+        condition: service_healthy
+
+networks:
+  default:
+    name: mercy-network

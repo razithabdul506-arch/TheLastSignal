@@ -1,0 +1,24 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package.json package-lock.json ./
+COPY client/package.json client/
+
+# Install dependencies
+RUN npm install
+RUN npm install --workspace client
+
+# Copy source
+COPY client/ ./client/
+
+# Build
+RUN npm run build --workspace client
+
+# Serve with simple http server
+RUN npm install -g serve
+
+EXPOSE 3000
+
+CMD ["serve", "-s", "client/dist", "-l", "3000"]
