@@ -1,0 +1,20 @@
+{
+  "name": "mercy-investigation-game",
+  "version": "1.0.0",
+  "description": "MERCY - The Last Heartbeat: AI-powered murder investigation event",
+  "private": true,
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "install-all": "npm install && npm install --workspace server && npm install --workspace client",
+    "dev": "npm run dev --workspace server & npm run dev --workspace client",
+    "build": "npm run build --workspace server && npm run build --workspace client",
+    "start": "npm start --workspace server",
+    "test": "npm test --workspace server && npm test --workspace client"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
